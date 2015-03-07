@@ -58,7 +58,6 @@ int main(void){
     int remainmatch;
     cin >> remainmatch;
     Match matchs = new Match[remainmatch];
-    int reaminmyteam = 0;
     for(int i=0; i<remainmatch; i++){
         string line;
         cin >> line;
@@ -73,5 +72,36 @@ int main(void){
         }
         matchs[i].teamname2 = line;
     }
-    
+
+    for(int i=0; i<remainmatch; i++){
+
+        
+        
+        /*
+        if(matchs[i].teamname1.compare(mytime) == 0){
+            for(int j=0; j<8; j++){
+                if(teams[j].name.compare(matchs[i].teamname1) == 0 ){
+                    teams[j].win ++;
+                }
+                else if(teams[j].name.compare(matchs[i].teamname2) == 0){
+                        teams[j].lose ++;
+                }
+            }
+        }
+        else if(match[i].teamname2.compare(mytime) == 0){
+             for(int j=0; j<8; j++){
+                if(teams[j].name.compare(matchs[i].teamname1) == 0 ){
+                    teams[j].lose ++;
+                }
+                else if(teams[j].name.compare(matchs[i].teamname2) == 0){
+                        teams[j].win ++;
+                }
+            }
+        }
+        
+        else{
+            
+        }
+        */
+    }
 }
