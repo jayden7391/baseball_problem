@@ -19,10 +19,12 @@ typedef struct{
     string teamname2;
 }Match;
 
-void Ranking(Team* teams){
+int Ranking(Team* teams){
+    
+    int myt;
 
     for(int i=0; i<8; i++)
-        teams[i]. winrate = teams[i].win / (teams[i].win + teams[i].lose + teams[i].draw);
+        teams[i]. winrate = (double)teams[i].win / ((double)teams[i].win + (double)teams[i].lose + (double)teams[i].draw);
     Team temp;
 
     for(int i=0; i<8; i++){
@@ -39,8 +41,12 @@ void Ranking(Team* teams){
             }
         }
     }
-    for(int i=0; i<8; i++)
+    for(int i=0; i<8; i++){
         teams[i].rank = i+1;
+        if(teams[i].myteam == 1)
+            myt = i;
+    }
+    return myt;
 }
 
 int main(void){
@@ -49,93 +55,109 @@ int main(void){
 
     cin >> TestCase;
     
-    Team* teams = new Team[8];
+    for(int t = 0; t<TestCase; t++){
+        Team* teams = new Team[8];
     
-    for(int i=0; i<8; i++){
-        string line;
-        cin >> line;
-        string token;
-        string delimiter = " ";
-        size_t pos = 0;
-        int j = 0;
-        while ((pos = line.find(delimiter)) != std::string::npos) {
-            token = line.substr(0, pos);
-            line.erase(0, pos + delimiter.length());
-            switch(j){
-                case 0:
-                    teams[i].name = token;
-                    break;
-                case 1:
-                    istringstream(token) >> teams[i].win;
-                    break;
-                case 2:
-                    istringstream(token) >> teams[i].draw;
-                    break;
-                default:
-                    break;
+        for(int i=0; i<8; i++){
+            string line;
+            cin >> teams[i].name;
+            cin >> teams[i].win;
+            cin >> teams[i].draw;
+            cin >> teams[i].lose;
+        }
+
+        string myteam;
+        cin >> myteam;
+        int myt;
+
+        for(int i=0; i<8; i++){
+            if(teams[i].name.compare(myteam) == 0){
+                teams[i].myteam = 1;
             }
-            j ++;
+            else
+                teams[i].myteam = 0;
         }
-        istringstream(line) >> teams[i].lose;
-    }
 
-    string myteam;
-    cin >> myteam;
+        myt = Ranking(teams);
 
-    for(int i=0; i<8; i++){
-        if(teams[i].name.compare(myteam) == 0)
-            teams[i].myteam = 1;
-        else
-            teams[i].myteam = 0;
-    }
-
-    Ranking(teams);
-
-    int remainmatch;
-    cin >> remainmatch;
-    Match* matchs = new Match[remainmatch];
-    for(int i=0; i<remainmatch; i++){
-        string line;
-        cin >> line;
-        string token;
-        string delimiter = " ";
-        size_t pos = 0;
-        int j = 0;
-        while((pos = line.find(delimiter)) != std::string::npos){
-            token = line.substr(0,pos);
-            line.erase(0, pos + delimiter.length());
-            matchs[i].teamname1 = token;
+        int remainmatch;
+        cin >> remainmatch;
+        Match* matchs = new Match[remainmatch];
+        for(int i=0; i<remainmatch; i++){
+            cin >> matchs[i].teamname1;
+            cin >> matchs[i].teamname2;
         }
-        matchs[i].teamname2 = line;
-    }
 
-    for(int i=0; i<remainmatch; i++){   
-        /*
-        if(matchs[i].teamname1.compare(mytime) == 0){
+        for(int i=0; i<remainmatch; i++){   
+            int t1;
+            int t2;
             for(int j=0; j<8; j++){
-                if(teams[j].name.compare(matchs[i].teamname1) == 0 ){
-                    teams[j].win ++;
-                }
-                else if(teams[j].name.compare(matchs[i].teamname2) == 0){
-                        teams[j].lose ++;
-                }
+                if(matchs[i].teamname1.compare(teams[j].name) == 0)
+                    t1 = j;
+                else if(matchs[i].teamname2.compare(teams[j].name) == 0)
+                    t2 = j;
             }
-        }
-        else if(match[i].teamname2.compare(mytime) == 0){
-             for(int j=0; j<8; j++){
-                if(teams[j].name.compare(matchs[i].teamname1) == 0 ){
-                    teams[j].lose ++;
-                }
-                else if(teams[j].name.compare(matchs[i].teamname2) == 0){
-                        teams[j].win ++;
-                }
+
+            if(teams[t1].myteam == 1){
+                teams[t1].win ++;
+                teams[t2].lose ++;
             }
-        }
-        
-        else{
+            else if(teams[t2].myteam == 1){
+                teams[t2].win ++;
+                teams[t1].lose ++;
+            }
             
+            if(teams[t1].myteam == 0 && teams[t2].myteam == 0){
+            
+                if(teams[t1].rank > teams[myt].rank && teams[t2].rank > teams[myt].rank){
+                    if(teams[t1].rank > teams[t2].rank){
+                        teams[t1].win ++;
+                        teams[t2].lose ++;
+                    }
+                    else{
+                        teams[t1].lose ++;
+                        teams[t2].win ++;
+                    }
+                }
+                else if(teams[t1].rank < teams[myt].rank && teams[t2].rank > teams[myt].rank){
+                    if(teams[myt].rank <= 4){
+                        teams[t1].win ++;
+                        teams[t2].lose ++;
+                    }
+                    else{
+                        teams[t1].lose ++;
+                        teams[t2].win ++;
+                    }
+                }
+                else if(teams[t1].rank > teams[myt].rank && teams[t2].rank < teams[myt].rank){
+                    if(teams[myt].rank <= 4){
+                        teams[t1].lose ++;
+                        teams[t2].win ++;
+                    }
+                    else{
+                        teams[t1].win ++;
+                        teams[t2].lose ++;
+                    }
+                }
+                else if(teams[t1].rank < teams[myt].rank && teams[t2].rank < teams[myt].rank){
+                    if(teams[t1].rank < teams[t2].rank){
+                        teams[t1].win ++;
+                        teams[t2].lose ++;
+                    }
+                    else{
+                        teams[t1].lose ++;
+                        teams[t2].win ++;
+                    }
+                }
+            }
+            myt = Ranking(teams);
+            //cout << teams[myt].rank << endl;
         }
-        */
+    
+        if(teams[myt].rank <= 4)
+            cout << "YES" << endl;
+        else
+            cout << "NO" << endl;
     }
 
     return 0;
