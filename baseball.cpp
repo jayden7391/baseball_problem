@@ -108,7 +108,9 @@ int main(void){
             }
             
             if(teams[t1].myteam == 0 && teams[t2].myteam == 0){
-            
+                teams[t1].draw ++;
+                teams[t2].draw ++;
+                /*
                 if(teams[t1].rank > teams[myt].rank && teams[t2].rank > teams[myt].rank){
                     if(teams[t1].rank > teams[t2].rank){
                         teams[t1].win ++;
@@ -149,6 +151,7 @@ int main(void){
                         teams[t2].win ++;
                     }
                 }
+                */
             }
             myt = Ranking(teams);
             //cout << teams[myt].rank << endl;
