@@ -23,21 +23,29 @@ int Ranking(Team* teams){
     
     int myt;
 
-    for(int i=0; i<8; i++)
-        teams[i]. winrate = (double)teams[i].win / ((double)teams[i].win + (double)teams[i].lose + (double)teams[i].draw);
-    Team temp;
-
     for(int i=0; i<8; i++){
-        for(int j=0; j<7; j++){
+        if(teams[i].win + teams[i].lose+teams[i].draw == 0)
+            teams[i].winrate = 0;
+        else
+            teams[i]. winrate = (double)teams[i].win / ((double)teams[i].win + (double)teams[i].lose + (double)teams[i].draw);
+    }
+    Team temp;
+    int check = 0;
+    int n = 7;
+    for(int i = 1; i<8; i++){
+        check = 0;
+        for(int j=0; j<8-i; j++){
             if(teams[j].winrate < teams[j+1].winrate){
                 temp = teams[j];
                 teams[j] = teams[j+1];
                 teams[j+1] = temp;
+                check = 1;
             }
             else if(teams[j].winrate == teams[j+1].winrate && teams[j+1].myteam == 1){
                 temp = teams[j];
                 teams[j] = teams[j+1];
                 teams[j+1] = temp;
+                check = 1;
             }
         }
     }
@@ -111,9 +119,11 @@ int main(void){
                 teams[t1].draw ++;
                 teams[t2].draw ++;
             }
+        
+            myt = Ranking(teams);
+
         }
-        myt = Ranking(teams); 
-        if(teams[myt].rank <= 4)
+        if(myt < 4)
             cout << "YES" << endl;
         else
             cout << "NO" << endl;
