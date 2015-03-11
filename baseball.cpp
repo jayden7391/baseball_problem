@@ -28,7 +28,7 @@ int Ranking(Team* teams){
     Team temp;
 
     for(int i=0; i<8; i++){
-        for(int j=0; j<i-1; j++){
+        for(int j=0; j<7; j++){
             if(teams[j].winrate < teams[j+1].winrate){
                 temp = teams[j];
                 teams[j] = teams[j+1];
@@ -88,9 +88,8 @@ int main(void){
             cin >> matchs[i].teamname2;
         }
 
+
         for(int i=0; i<remainmatch; i++){   
-            int t1;
-            int t2;
             for(int j=0; j<8; j++){
                 if(matchs[i].teamname1.compare(teams[j].name) == 0)
                     t1 = j;
@@ -107,56 +106,12 @@ int main(void){
                 teams[t1].lose ++;
             }
             
-            if(teams[t1].myteam == 0 && teams[t2].myteam == 0){
+            else{
                 teams[t1].draw ++;
                 teams[t2].draw ++;
-                /*
-                if(teams[t1].rank > teams[myt].rank && teams[t2].rank > teams[myt].rank){
-                    if(teams[t1].rank > teams[t2].rank){
-                        teams[t1].win ++;
-                        teams[t2].lose ++;
-                    }
-                    else{
-                        teams[t1].lose ++;
-                        teams[t2].win ++;
-                    }
-                }
-                else if(teams[t1].rank < teams[myt].rank && teams[t2].rank > teams[myt].rank){
-                    if(teams[myt].rank <= 4){
-                        teams[t1].win ++;
-                        teams[t2].lose ++;
-                    }
-                    else{
-                        teams[t1].lose ++;
-                        teams[t2].win ++;
-                    }
-                }
-                else if(teams[t1].rank > teams[myt].rank && teams[t2].rank < teams[myt].rank){
-                    if(teams[myt].rank <= 4){
-                        teams[t1].lose ++;
-                        teams[t2].win ++;
-                    }
-                    else{
-                        teams[t1].win ++;
-                        teams[t2].lose ++;
-                    }
-                }
-                else if(teams[t1].rank < teams[myt].rank && teams[t2].rank < teams[myt].rank){
-                    if(teams[t1].rank < teams[t2].rank){
-                        teams[t1].win ++;
-                        teams[t2].lose ++;
-                    }
-                    else{
-                        teams[t1].lose ++;
-                        teams[t2].win ++;
-                    }
-                }
-                */
             }
-            myt = Ranking(teams);
-            //cout << teams[myt].rank << endl;
         }
-    
+        myt = Ranking(teams); 
         if(teams[myt].rank <= 4)
             cout << "YES" << endl;
         else
