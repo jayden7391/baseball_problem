@@ -87,7 +87,8 @@ int main(void){
             cin >> matchs[i].teamname1;
             cin >> matchs[i].teamname2;
         }
-
+        int t1;
+        int t2;
 
         for(int i=0; i<remainmatch; i++){   
             for(int j=0; j<8; j++){
